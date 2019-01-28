@@ -6,12 +6,12 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-public class AppTest {
+public class AccountTest {
 
 	@Test
 	public void shouldReturnOneHundredForBalance() {
 		// Arrange
-		Atm underTest = new Atm(100);
+		Account underTest = new Account(100);
 		// Act
 		int actual = underTest.checkBalance();
 		// Assert
@@ -21,7 +21,7 @@ public class AppTest {
 	@Test
 	public void shouldReturnTwoHundredForBalance() {
 		//Arrange
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 		//Act
 		int actual = underTest.checkBalance();
 		assertEquals(200, actual);
@@ -30,7 +30,7 @@ public class AppTest {
 	@Test
 	public void shouldWithdraw() {
 		// Arrange
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 		// Act
 		int withdrawalAmount = underTest.withdraw(50); //returns the variable depositamt from deposit()
 		// Assert
@@ -39,7 +39,7 @@ public class AppTest {
 	@Test
 	public void shouldDeposit() {
 		//Arrange
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 		//Act
 		int shouldDeposit = underTest.deposit(50); //returns the variable withdrawlamt from withdraw()
 		//Assert 
@@ -50,7 +50,7 @@ public class AppTest {
 	@Test
 	public void shouldDecreaseWhenMoneyIsWithdrawn() {
 		// Arrange
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 		// Act
 		int originalBalance = underTest.checkBalance(); //create new variable originalBalance that is equal to checkbalance
 		underTest.withdraw(50); //withdraw 150 as hardcoded in method withdraw
@@ -63,7 +63,7 @@ public class AppTest {
 	@Test
 	public void shouldIncreaseWhenMoneyIsDeposited() {
 		// Arrange
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 		// Act
 		int originalBalance = underTest.checkBalance(); //runs checkbalance method
 		underTest.deposit(50); //runs deposit code (adds 50)
@@ -83,7 +83,7 @@ public class AppTest {
 		int deposit = input.nextInt();
 		
 		
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 				
 				
 				
@@ -105,7 +105,7 @@ public class AppTest {
 		int withdraw = input.nextInt();
 		
 		
-		Atm underTest = new Atm(200);
+		Account underTest = new Account(200);
 				
 				
 				
@@ -121,22 +121,26 @@ public class AppTest {
 	}
 	
 	@Test
-	public void pinNumberShouldEqualonetwothreefour() {
+	public void pinNumberShouldEqualwhateveruserenters() {
 		//ACT
-		Atm underTest = new Atm(1234);
+		Scanner input = new Scanner (System.in);
+		System.out.println("Enter PIN. (user 1234");
 		
-		int userPIN = underTest.checkPIN();
+		int pinNumber = input.nextInt();//enter PIN
 		
+		
+		Account underTest = new Account(1234); //
 		//ARRANGE
+		int userPINreturn = underTest.checkPIN(pinNumber);//sets pin number in method
 		
-		assertEquals(userPIN, 1234);
+		assertEquals(pinNumber, userPINreturn);
 		//ASSERT
 	}
 	
 	@Test
 	public void cannotwithdrawmorethanbalance() {
 		//act
-		Atm underTest = new Atm (200);
+		Account underTest = new Account (200);
 		
 		//arrange
 		int originalBalance = underTest.checkBalance(); //create new variable originalBalance that is equal to checkbalance
@@ -146,6 +150,18 @@ public class AppTest {
 		//assert
 		
 		assertEquals(originalBalance, newBalance);
+	}
+	@Test
+	public void shouldHaveAccountNumber() {
+		//arrange
+		
+		Account underTest = new Account("0", 200); //hard coding an account number and initial balance
+		String expected = underTest.getAccountNumber();
+		
+		//act
+		assertEquals(expected, "0");
+		
+		//assert
 	}
 	
 	
