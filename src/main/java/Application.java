@@ -210,7 +210,7 @@ public class Application {
 					atmOption = mainUserMenu(input); 
 			
 				}// close else if for option 2 deposit
-				else if(atmOption == 3)
+				else if(atmOption == 3) //check balances
 				{
 					
 				Atm atm = new Atm();
