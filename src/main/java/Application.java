@@ -86,8 +86,9 @@ public class Application {
 		atmtable.addAccount(new Account("3", 300));
 		while(atmOption != 5) {
 			
-			if(atmOption == 1) {
-				System.out.println("Your new account balances are as follows: ");
+			if(atmOption == 1) //withdraw method 
+			{
+				System.out.println("Your account balances are as follows: ");
 				for (Account account : atmtable.getAccounts().values()) //display user accounts
 				{
 					System.out.println(account.getAccountNumber() + " current balance: " + account.checkBalance());
@@ -177,25 +178,41 @@ public class Application {
 				atmOption = mainUserMenu(input); 
 			
 			}//close else if for option 1 withdrawal
-				else if(atmOption == 2)
-				{
+				else if(atmOption == 2)//deposit method
+					{
+					System.out.println("Your account balances are as follows: ");
+					for (Account account : atmtable.getAccounts().values()) //display user accounts
+					{
+						System.out.println(account.getAccountNumber() + " current balance: " + account.checkBalance());
+					}
+					System.out.println("Which account would you like to deposit to?");
+					String userAccountChoice = input.next();
+					//receives user account
+					System.out.println("How much would you like to deposit?");
+					
+					int deposit = input.nextInt(); //receives the amount of withdrawal
+
+					//selects the account from the atm
+					Account depositAccountChoice = atmtable.getAccount(userAccountChoice);
+					
+					
+					
+					depositAccountChoice.deposit(deposit);
+					int newBalance = depositAccountChoice.checkBalance(); // runs balance code to check balance
+					
+					
+					
+					
+					
+					
 		
-					System.out.println("You selected deposit");
+					System.out.println("Your new balance is " + newBalance);
 					atmOption = mainUserMenu(input); 
 			
 				}// close else if for option 2 deposit
 				else if(atmOption == 3)
 				{
-					/*
-				// sets references for checking balance, assuming a start of 200
-				Account atmBalanceCheck = new Account(atmBalance);
-
-				int userBalance = atmBalanceCheck.checkBalance();
-
-				System.out.println("Your balance is " + userBalance);
-			
-				atmOption = mainUserMenu(input); //takes user back to menu
-					 */
+					
 				Atm atm = new Atm();
 				Collection<Account> userAccounts = atm.getAccounts().values();
 				System.out.println("Your account balances are as follows:");
@@ -206,7 +223,11 @@ public class Application {
 				}//close option 3
 				
 				
-				//Brings back the user menu prompt
+				
+				
+				
+				
+				
 				atmOption = mainUserMenu(input);
 				
 				
