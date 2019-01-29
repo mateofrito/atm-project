@@ -40,7 +40,7 @@ public class Account {
 		this.withdraw = withdraw;
 		int withdrawalamt = withdraw;
 		//if statement ensures withdrawal amount cannot exceed current balance
-		if(withdraw > balance)//returns the balance amount to an if statement in the application class
+		if(withdraw > balance || withdraw % 10 != 0)//returns the balance amount to an if statement in the application class
 			{
 			return balance;
 		}else //returns the withdrawal amount to process the withdraw

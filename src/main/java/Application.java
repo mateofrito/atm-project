@@ -80,6 +80,7 @@ public class Application {
 	// method for switch
 	private static int optionSwitch(Scanner input, int atmOption) {
 		Atm atmtable = new Atm();
+		Collection<Account> userAccounts = atmtable.getAccounts().values();
 		
 		atmtable.addAccount(new Account("1", 100));
 		atmtable.addAccount(new Account("2", 200));
@@ -111,63 +112,98 @@ public class Application {
 				int originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
 				withDrawalAccountChoice.withdraw(withdraw);
 				int newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
+				while(originalBalance == newBalance)
+				{
+					System.out.println("You fucked up, son.");
+					//withDrawalAccountChoice.deposit(withdraw);
+					System.out.println(originalBalance);
+					System.out.println(newBalance);
+					System.out.println("How much would you like to withdraw (enter 50 for test)?");
+					withdraw = input.nextInt(); //receives the amount of withdrawal
 
-			// while for determining 10's
-					while(withdraw % 10 != 0) {
-						System.out.println("Invalid amount, enter multiples of $10's");
-						System.out.println("How much would you like to withdraw (enter 50 for test)?");
-						withdraw = input.nextInt();
-
-						//selects the account from the atm
-						withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-						
-						
-
-						originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-						withDrawalAccountChoice.withdraw(withdraw);
-						newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-
-						} // close while
-							/*while loop, withdraw method will send back the original balance it the amount to withdraw is greater than the
-							 * available balance
-							 * 
-							 */
-							while (originalBalance == newBalance) {
-								System.out.println("You attempted to with draw $" + withdraw + ". However, your current balance is $"
-										+ originalBalance + ".");
-								System.out.println("Please enter a smaller amount");
-
-								System.out.println("How much would you like to withdraw (enter 50 for test)?");
-								withdraw = input.nextInt();
-
-								//selects the account from the atm
-								withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-								
-								
-
-								originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-								withDrawalAccountChoice.withdraw(withdraw);
-								newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-
-								// nested while to ensure that they still enter the new amount in multiples of
-								// 10.
-									while (withdraw % 10 != 0) {
-										System.out.println("Invalid amount, enter multiples of $10's");
-										System.out.println("How much would you like to withdraw (enter 50 for test)?");
-										withdraw = input.nextInt();
-
-										//selects the account from the atm
-										withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-										
-										
-
-										originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-										withDrawalAccountChoice.withdraw(withdraw);
-										newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-
-									} // close nested while
-
-							} // close while determining 10's
+					//selects the account from the atm
+					withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
+				
+				
+					/*compares the original balance against the new balance - if the user attempts to withdrawl and amount higher than the original balance
+					 * the withdrawl method will return the original balance, causing the while loop to trigger prompting user to enter an amount lower than available balance
+					 */
+					originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
+					withDrawalAccountChoice.withdraw(withdraw);
+					newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
+				
+				}
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+//				// while for determining 10's ****commented out***
+//					while(withdraw % 10 != 0) {
+//						System.out.println("Invalid amount, enter multiples of $10's");
+//						System.out.println("How much would you like to withdraw (enter 50 for test)?");
+//						withdraw = input.nextInt();
+//
+//						//selects the account from the atm
+//						withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
+//						
+//						
+//
+//						originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
+//						withDrawalAccountChoice.withdraw(withdraw);
+//						newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
+//
+//						} // close while
+//							/*while loop, withdraw method will send back the original balance it the amount to withdraw is greater than the
+//							 * available balance
+//							 * 
+//							 */
+//							while (originalBalance == newBalance) {
+//								System.out.println("You attempted to with draw $" + withdraw + ". However, your current balance is $"
+//										+ originalBalance + ".");
+//								System.out.println("Please enter a smaller amount");
+//
+//								System.out.println("How much would you like to withdraw (enter 50 for test)?");
+//								withdraw = input.nextInt();
+//
+//								//selects the account from the atm
+//								withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
+//								
+//								
+//
+//								originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
+//								withDrawalAccountChoice.withdraw(withdraw);
+//								newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
+//
+//								// nested while to ensure that they still enter the new amount in multiples of
+//								// 10.
+//									while (withdraw % 10 != 0) {
+//										System.out.println("Invalid amount, enter multiples of $10's");
+//										System.out.println("How much would you like to withdraw (enter 50 for test)?");
+//										withdraw = input.nextInt();
+//
+//										//selects the account from the atm
+//										withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
+//										
+//										
+//
+//										originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
+//										withDrawalAccountChoice.withdraw(withdraw);
+//										newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
+//
+//									} // close nested while
+//
+//							} // close while determining 10's
 
 				//Verifies withdrawal amount and new balance for user
 				System.out.println("Processing transaction for $" + withdraw + ".");
@@ -213,8 +249,8 @@ public class Application {
 				else if(atmOption == 3) //check balances
 				{
 					
-				Atm atm = new Atm();
-				Collection<Account> userAccounts = atm.getAccounts().values();
+				
+				
 				System.out.println("Your account balances are as follows:");
 				for(Account account : userAccounts) {
 					//identify how many accounts are available, then loop through each one
@@ -239,7 +275,7 @@ public class Application {
 			else if (atmOption == 4) //adding account balance
 			{ 
 				//menu for adding an account balance
-				Atm atm= new Atm();
+				Atm atm= new Atm(); 
 				
 				//get info to make account
 				System.out.println("Please enter a unique Account Number");
@@ -257,25 +293,7 @@ public class Application {
 				System.out.println("Current user Account number: " + atmtable.getAccountsLength());
 				
 				
-				//System.out.println("1. Add More Accounts");
-				//System.out.println("2. Return to Main Menu");
-				//int acctMenuOption = input.nextInt();
-				
-				//Exit to main menu or add more accounts
-				
-				
-				
-				
-			/*	while(acctMenuOption != 3) {
-				if (acctMenuOption == 1){
-					addNewAccountMenu(input);
-				} else if(acctMenuOption == 2)
-				{
-					atmOption = mainUserMenu(input);
-				}
-				
-				
-				}//end account menu while*/
+			
 				atmOption = mainUserMenu(input);
 			}//option 4 to add an account
 			else if(atmOption == 5)
