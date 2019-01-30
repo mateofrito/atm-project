@@ -164,5 +164,23 @@ public class AccountTest {
 		//assert
 	}
 	
-	
+	@Test
+	public void shouldBeAbletoAddBillPay() {
+		//arrange
+		BillPay underTest = new BillPay();
+		String accToAdd = "AEP";
+		
+		
+		//act
+		int intialAccounts = underTest.getAccountsLength();
+		underTest.addBillPayee(accToAdd);
+		int accountsAfterAddition = underTest.getAccountsLength();
+		
+		System.out.println(underTest.getAccount(0));
+		
+		
+		//assert
+		assertEquals(intialAccounts + 1, accountsAfterAddition);
+		
+	}
 }

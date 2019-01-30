@@ -80,31 +80,59 @@ public class Application {
 	// method for switch
 	private static int optionSwitch(Scanner input, int atmOption) {
 		Atm atmtable = new Atm();
+		
 		Collection<Account> userAccounts = atmtable.getAccounts().values();
 		
-		atmtable.addAccount(new Account("1", 100));
-		atmtable.addAccount(new Account("2", 200));
-		atmtable.addAccount(new Account("3", 300));
+		
+		atmtable.addAccount(new Checking("1", 100));
+		atmtable.addAccount(new Checking("2", 2000));
+		atmtable.addAccount(new Savings("3", 300));
+		atmtable.addAccount(new MoneyMarketAccount("4", 400));
+		atmtable.addAccount(new Retirement("5", 25000));
 		while(atmOption != 5) {
 			
 			if(atmOption == 1) //withdraw method 
 			{
+				System.out.println("------------------------------------------------------------------------------");
 				System.out.println("Your account balances are as follows: ");
 				for (Account account : atmtable.getAccounts().values()) //display user accounts
 				{
-					System.out.println(account.getAccountNumber() + " current balance: " + account.checkBalance());
+					String accountType = "account";
+					//if statements to determine the type of account the user has on the display
+					if (account instanceof MoneyMarketAccount) 
+						{
+							accountType = "Money Market  ";
+						} else if (account instanceof Retirement) {
+							
+							accountType = "Retirement    ";
+						}	else if(account instanceof Checking) {
+							accountType = "Checking      ";
+						} else if(account instanceof Savings) {
+							accountType = "Savings       ";
+						}
+					System.out.println(account.getAccountNumber() + "       " + accountType + "$" + account.checkBalance());
 				}
+				System.out.println("------------------------------------------------------------------------------");
 				System.out.println("Which account would you like to withdraw from?");
 				String userAccountChoice = input.next();
+				Account withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
 				//receives user account
-				System.out.println("How much would you like to take out?");
+				while(withDrawalAccountChoice instanceof Retirement)//selects the account from the atm and verifies that they cannot withdrawl from a retirement account
+				{	
+					System.out.println("Cannot withdraw from a retirement account.");
+					System.out.println("Please select another account.");
+					userAccountChoice = input.next();
+					withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
+					
+				}
+				System.out.println("\nHow much would you like to take out?");
 				System.out.println("Please enter the amount in multiples of 10's.");
 				System.out.println("How much would you like to withdraw (enter 50 for test)?");
 				int withdraw = input.nextInt(); //receives the amount of withdrawal
 
-				//selects the account from the atm
-				Account withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
 				
+				
+				//Account withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
 				
 				/*compares the original balance against the new balance - if the user attempts to withdrawl and amount higher than the original balance
 				 * the withdrawl method will return the original balance, causing the while loop to trigger prompting user to enter an amount lower than available balance
@@ -112,7 +140,7 @@ public class Application {
 				int originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
 				withDrawalAccountChoice.withdraw(withdraw);
 				int newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-				while(originalBalance == newBalance)
+				while(originalBalance == newBalance)//when the original balance equals the new balance, it prompts the user again
 				{
 					System.out.println("You fucked up, son.");
 					//withDrawalAccountChoice.deposit(withdraw);
@@ -134,78 +162,7 @@ public class Application {
 				
 				}
 			
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-//				// while for determining 10's ****commented out***
-//					while(withdraw % 10 != 0) {
-//						System.out.println("Invalid amount, enter multiples of $10's");
-//						System.out.println("How much would you like to withdraw (enter 50 for test)?");
-//						withdraw = input.nextInt();
-//
-//						//selects the account from the atm
-//						withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-//						
-//						
-//
-//						originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-//						withDrawalAccountChoice.withdraw(withdraw);
-//						newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-//
-//						} // close while
-//							/*while loop, withdraw method will send back the original balance it the amount to withdraw is greater than the
-//							 * available balance
-//							 * 
-//							 */
-//							while (originalBalance == newBalance) {
-//								System.out.println("You attempted to with draw $" + withdraw + ". However, your current balance is $"
-//										+ originalBalance + ".");
-//								System.out.println("Please enter a smaller amount");
-//
-//								System.out.println("How much would you like to withdraw (enter 50 for test)?");
-//								withdraw = input.nextInt();
-//
-//								//selects the account from the atm
-//								withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-//								
-//								
-//
-//								originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-//								withDrawalAccountChoice.withdraw(withdraw);
-//								newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-//
-//								// nested while to ensure that they still enter the new amount in multiples of
-//								// 10.
-//									while (withdraw % 10 != 0) {
-//										System.out.println("Invalid amount, enter multiples of $10's");
-//										System.out.println("How much would you like to withdraw (enter 50 for test)?");
-//										withdraw = input.nextInt();
-//
-//										//selects the account from the atm
-//										withDrawalAccountChoice = atmtable.getAccount(userAccountChoice);
-//										
-//										
-//
-//										originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
-//										withDrawalAccountChoice.withdraw(withdraw);
-//										newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
-//
-//									} // close nested while
-//
-//							} // close while determining 10's
 
-				//Verifies withdrawal amount and new balance for user
 				System.out.println("Processing transaction for $" + withdraw + ".");
 				System.out.println("New Balance is $" + newBalance + ".");
 				
@@ -253,8 +210,14 @@ public class Application {
 				
 				System.out.println("Your account balances are as follows:");
 				for(Account account : userAccounts) {
+					String accountType = "account";
+					//if statements to determine the type of account the user has on the display
+					if (account instanceof MoneyMarketAccount) 
+					{
+						accountType = "Money Market";
+					}
 					//identify how many accounts are available, then loop through each one
-					System.out.println("Account " + account.getAccountNumber() +" has $" + account.checkBalance());
+					System.out.println("Account " + account.getAccountNumber() +" has $" + account.checkBalance() + " " + accountType);
 					
 				}//close option 3
 				
@@ -349,6 +312,22 @@ public class Application {
 	}// close exitMessage
 
 	private static int mainUserMenu(Scanner input) {
+		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRR      YYYY            YYYY                            ");
+		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRRR      YYYY          YYYY                              ");
+		System.out.println("  FFFFFFFFFFFFF  RRRR    RRRR      YYYY        YYYY                            ");
+		System.out.println("  FFFF           RRRR    RRRRR      YYYY      YYYY                      ");
+		System.out.println("  FFFF           RRRR    RRRR        YYYY    YYYY                     ");
+		System.out.println("  FFFFFFFFF      RRRR   RRRR          YYYY  YYYY                           ");
+		System.out.println("  FFFFFFFFF      RRRRRRRRRR            YYYYYYYY                              ");
+		System.out.println("  FFFFFFFFF      RRRRRRRR               YYYYYY                           ");
+		System.out.println("  FFFF           RRRRRRRRR               YYYY                        ");
+		System.out.println("  FFFF           RRRR  RRRR              YYYY                       ");
+		System.out.println("  FFFF           RRRR   RRRR             YYYY                        ");
+		System.out.println("  FFFF           RRRR    RRRR            YYYY                        ");
+		System.out.println("  FFFF           RRRR     RRRR           YYYY                       ");
+		System.out.println("          NATIONAL BANK - MEMBER FDIC                               ");
+		
+		
 		System.out.println("Welcome to The Fry National Bank!");
 		System.out.println("What can we do for you today?");
 		System.out.println("1. Withdrawal");
