@@ -39,4 +39,6 @@ public class Atm {
 		//transfer amount is the amount of transfer the user enters
 		
 	}
+
+	
 }
