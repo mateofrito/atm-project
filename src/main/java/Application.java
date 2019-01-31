@@ -1,6 +1,7 @@
 
 //import java.io.InputStream;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -25,6 +26,13 @@ public class Application {
 
 		System.out.println("Card Inserted.  Welcome New User");
 		System.out.println("Please Select a 4 digit Personal Indentification Number.");
+		
+		Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.exclamation");
+		
+		
+		
+		
+		
 
 		int pinNumber = input.nextInt();
 
@@ -67,6 +75,7 @@ public class Application {
 		// while statement to prompt user to enter a valid response
 		while (atmOption >= 7) {
 			System.out.println("Invalid Option, please select from an option below.");
+			Toolkit.getDefaultToolkit().beep();
 
 			atmOption = mainUserMenu(input);
 
@@ -86,21 +95,23 @@ public class Application {
 		
 		
 		atmtable.addAccount(new Checking("1", 100));
-		atmtable.addAccount(new Checking("2", 2000));
-		atmtable.addAccount(new Savings("3", 300));
-		atmtable.addAccount(new MoneyMarketAccount("4", 400));
-		atmtable.addAccount(new Retirement("5", 25000));
+		atmtable.addAccount(new Retirement("2", 30000));
+		atmtable.addAccount(new Checking("3", 2000));
+		atmtable.addAccount(new Savings("4", 300));
+		atmtable.addAccount(new MoneyMarketAccount("5", 400));
+		atmtable.addAccount(new Retirement("6", 25000));
 		while(atmOption != 6) {
 			
 			if(atmOption == 1) //withdraw method 
 			{
 				System.out.println("------------------------------------------------------------------------------");
 				System.out.println("Your account balances are as follows: ");
+				
 				for (Account account : atmtable.getAccounts().values()) //display user accounts
 				{
 					String accountType = "account";
 					//if statements to determine the type of account the user has on the display
-					if (account instanceof MoneyMarketAccount) 
+					if (account instanceof MoneyMarketAccount)
 						{
 							accountType = "Money Market  ";
 						} else if (account instanceof Retirement) {
@@ -111,8 +122,13 @@ public class Application {
 						} else if(account instanceof Savings) {
 							accountType = "Savings       ";
 						}
-					System.out.println(account.getAccountNumber() + "       " + accountType + "$" + account.checkBalance());
+					
+						if(account instanceof MoneyMarketAccount || account instanceof Checking || account instanceof Savings) {
+						System.out.println(account.getAccountNumber() + "       " + accountType + "$" + account.checkBalance());
+						
+						}
 				}
+					
 				System.out.println("------------------------------------------------------------------------------");
 				System.out.println("Which account would you like to withdraw from?");
 				String userAccountChoice = input.next();
@@ -120,6 +136,7 @@ public class Application {
 				//receives user account
 				while(withDrawalAccountChoice instanceof Retirement)//selects the account from the atm and verifies that they cannot withdrawl from a retirement account
 				{	
+					Toolkit.getDefaultToolkit().beep();
 					System.out.println("Cannot withdraw from a retirement account.");
 					System.out.println("Please select another account.");
 					userAccountChoice = input.next();
@@ -143,7 +160,7 @@ public class Application {
 				int newBalance = withDrawalAccountChoice.checkBalance(); // runs balance code to check balance
 				while(originalBalance == newBalance)//when the original balance equals the new balance, it prompts the user again
 				{
-					System.out.println("You fucked up, son.");
+					System.out.println("Invalid Amount.");
 					//withDrawalAccountChoice.deposit(withdraw);
 					System.out.println(originalBalance);
 					System.out.println(newBalance);
@@ -383,18 +400,21 @@ public class Application {
 	}// close exitMessage
 
 	private static int mainUserMenu(Scanner input) {
-		
-		System.out.println("What can we do for you today?");
-		System.out.println("1. Withdrawal");
-		System.out.println("2. Deposit");
-		System.out.println("3. Check Balance");
-		System.out.println("4. Add Account");
-		System.out.println("5. Quit");
-
+		System.out.println("*********************************************************************************************************");
+		System.out.println("**                                        Main Menu                                                    **");
+		System.out.println("*********************************************************************************************************");
+		System.out.println("**                               What can we do for you today?                                         **");
+		System.out.println("**                                     1. Withdrawal                                                   **");
+		System.out.println("**                                     2. Deposit                                                      **");
+		System.out.println("**                                     3. Check Balance                                                **");
+		System.out.println("**                                     4. Add Account                                                  **");
+		System.out.println("**                                     5. Transfer Between Accounts                                    **");
+		System.out.println("**                                     6. Quit                                                         **");
+		System.out.println("*********************************************************************************************************");
 		int atmOption = input.nextInt();
 		return atmOption;
 	}// close mainUserMenu
-
+ 
 	private static void fryNationalBankLogo() {
 		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRR      YYYY            YYYY                            ");
 		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRRR      YYYY          YYYY                              ");
