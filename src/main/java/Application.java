@@ -1,5 +1,6 @@
 
 //import java.io.InputStream;
+import java.awt.Toolkit;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -60,11 +61,11 @@ public class Application {
 		}
 
 		// refactored method menu options to a method
-
+		fryNationalBankLogo();
 		int atmOption = mainUserMenu(input);
 
 		// while statement to prompt user to enter a valid response
-		while (atmOption >= 5) {
+		while (atmOption >= 7) {
 			System.out.println("Invalid Option, please select from an option below.");
 
 			atmOption = mainUserMenu(input);
@@ -89,7 +90,7 @@ public class Application {
 		atmtable.addAccount(new Savings("3", 300));
 		atmtable.addAccount(new MoneyMarketAccount("4", 400));
 		atmtable.addAccount(new Retirement("5", 25000));
-		while(atmOption != 5) {
+		while(atmOption != 6) {
 			
 			if(atmOption == 1) //withdraw method 
 			{
@@ -259,12 +260,82 @@ public class Application {
 			
 				atmOption = mainUserMenu(input);
 			}//option 4 to add an account
-			else if(atmOption == 5)
+			else if(atmOption == 5)//transfer between accounts
 			{
+				
+				
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("---------------------------Balance Transfer-----------------------------------");
+				System.out.println("------------------------------------------------------------------------------");
+				for (Account account : atmtable.getAccounts().values()) //display user accounts
+				{
+				String accountType = "account";
+				//if statements to determine the type of account the user has on the display
+				if (account instanceof MoneyMarketAccount) 
+					{
+						accountType = "Money Market  ";
+					} else if (account instanceof Retirement) {
+						
+						accountType = "Retirement    ";
+					}	else if(account instanceof Checking) {
+						accountType = "Checking      ";
+					} else if(account instanceof Savings) {
+						accountType = "Savings       ";
+					}
+				System.out.println(account.getAccountNumber() + "       " + accountType + "$" + account.checkBalance());
+				}
+				System.out.println("------------------------------------------------------------------------------");
+
+
+				System.out.println("Please enter the account number you want to withdraw funds from.");
+				String userAccountFrom = input.next();
+				Account transferFrom = (atmtable.getAccount(userAccountFrom));
+				System.out.println("Please enter the account number you wish to transfer funds to.");
+				String userAccountTo = input.next();
+				Account transferTo = (atmtable.getAccount(userAccountTo));
+				//will need error message to loop user out if the accounts are the same
+				
+				System.out.println("How much will you be transfering to " + atmtable.getAccount(userAccountTo)  + " ?");
+				int transferAmount = input.nextInt();
+				
+				Atm acctTransfer = new Atm();
+				
+				acctTransfer.transfer(transferFrom, transferTo, transferAmount);
+				
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("---------------------------Transfer Complete!---------------------------------");
+				System.out.println("------------------------------------------------------------------------------");
+				Toolkit.getDefaultToolkit().beep();
+				System.out.println("Your account balances are as follows: ");
+				for (Account account : atmtable.getAccounts().values()) //display user accounts
+				{
+				String accountType = "account";
+				//if statements to determine the type of account the user has on the display
+				if (account instanceof MoneyMarketAccount) 
+					{
+						accountType = "Money Market  ";
+					} else if (account instanceof Retirement) {
+						
+						accountType = "Retirement    ";
+					}	else if(account instanceof Checking) {
+						accountType = "Checking      ";
+					} else if(account instanceof Savings) {
+						accountType = "Savings       ";
+					}
+				System.out.println(account.getAccountNumber() + "       " + accountType + "$" + account.checkBalance());
+				}
+				System.out.println("------------------------------------------------------------------------------");
+				
+				atmOption = mainUserMenu(input);
+				
+			}//close option 5
+			else if(atmOption == 6)
+			{
+				
 				exitMessage();
 			}
 		//close else if for option 4 quit
-			else if (atmOption <= 0 || atmOption > 4) {
+			else if (atmOption <= 0 || atmOption > 6) {
 				System.out.println("Invalid Option, please select from an option below.");
 
 				atmOption = mainUserMenu(input);
@@ -312,6 +383,19 @@ public class Application {
 	}// close exitMessage
 
 	private static int mainUserMenu(Scanner input) {
+		
+		System.out.println("What can we do for you today?");
+		System.out.println("1. Withdrawal");
+		System.out.println("2. Deposit");
+		System.out.println("3. Check Balance");
+		System.out.println("4. Add Account");
+		System.out.println("5. Quit");
+
+		int atmOption = input.nextInt();
+		return atmOption;
+	}// close mainUserMenu
+
+	private static void fryNationalBankLogo() {
 		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRR      YYYY            YYYY                            ");
 		System.out.println("  FFFFFFFFFFFFF  RRRRRRRRRRR      YYYY          YYYY                              ");
 		System.out.println("  FFFFFFFFFFFFF  RRRR    RRRR      YYYY        YYYY                            ");
@@ -329,14 +413,5 @@ public class Application {
 		
 		
 		System.out.println("Welcome to The Fry National Bank!");
-		System.out.println("What can we do for you today?");
-		System.out.println("1. Withdrawal");
-		System.out.println("2. Deposit");
-		System.out.println("3. Check Balance");
-		System.out.println("4. Add Account");
-		System.out.println("5. Quit");
-
-		int atmOption = input.nextInt();
-		return atmOption;
-	}// close mainUserMenu
+	}
 }// close class
