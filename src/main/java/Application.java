@@ -73,7 +73,7 @@ public class Application {
 		int atmOption = mainUserMenu(input);
 
 		// while statement to prompt user to enter a valid response
-		while (atmOption >= 7) {
+		while (atmOption >= 8) {
 			System.out.println("Invalid Option, please select from an option below.");
 			Toolkit.getDefaultToolkit().beep();
 
@@ -90,8 +90,11 @@ public class Application {
 	// method for switch
 	private static int optionSwitch(Scanner input, int atmOption) {
 		Atm atmtable = new Atm();
+		Transactions transJournal = new Transactions();
 		
 		Collection<Account> userAccounts = atmtable.getAccounts().values();
+		Collection<Debts> userTransactions = transJournal.getTransactions().values();
+		
 		
 		
 		atmtable.addAccount(new Checking("1", 100));
@@ -100,7 +103,17 @@ public class Application {
 		atmtable.addAccount(new Savings("4", 300));
 		atmtable.addAccount(new MoneyMarketAccount("5", 400));
 		atmtable.addAccount(new Retirement("6", 25000));
-		while(atmOption != 6) {
+		
+		transJournal.addTransaction(new Debts("Target", "1" , 50));
+		transJournal.addTransaction(new Debts("Kroger", "1" , 145));
+		transJournal.addTransaction(new Debts("Speedway", "3" , 24));
+		transJournal.addTransaction(new Debts("Speedway", "3" , 45));
+		transJournal.addTransaction(new Debts("Transfer to Checking", "4" , 50));
+		transJournal.addTransaction(new Debts("Transfer to Checking", "4" , 50));
+		transJournal.addTransaction(new Debts("Deposit", "5" , 500));
+		transJournal.addTransaction(new Debts("Payroll Deposit 3%", "6" , 150));
+		
+		while(atmOption != 7) {
 			
 			if(atmOption == 1) //withdraw method 
 			{
@@ -180,7 +193,7 @@ public class Application {
 				
 				}
 			
-
+				transJournal.addTransaction(new Debts("ATM Withdrawl", userAccountChoice, withdraw));
 				System.out.println("Processing transaction for $" + withdraw + ".");
 				System.out.println("New Balance is $" + newBalance + ".");
 				
@@ -212,12 +225,13 @@ public class Application {
 					int newBalance = depositAccountChoice.checkBalance(); // runs balance code to check balance
 					
 					
-					
+					transJournal.addTransaction(new Debts("ATM Deposit ", userAccountChoice, deposit));
 					
 					
 					
 		
 					System.out.println("Your new balance is " + newBalance);
+					
 					atmOption = mainUserMenu(input); 
 			
 				}// close else if for option 2 deposit
@@ -225,19 +239,27 @@ public class Application {
 				{
 					
 				
+					System.out.println("------------------------------------------------------------------------------");
+					System.out.println("---------------------------Current Balances-----------------------------------");
+					System.out.println("------------------------------------------------------------------------------");
 				
-				System.out.println("Your account balances are as follows:");
 				for(Account account : userAccounts) {
 					String accountType = "account";
 					//if statements to determine the type of account the user has on the display
 					if (account instanceof MoneyMarketAccount) 
-					{
-						accountType = "Money Market";
-					}
+						{
+							accountType = "Money Market  ";
+						} else if (account instanceof Retirement) {
+							
+							accountType = "Retirement    ";
+						}	else if(account instanceof Checking) {
+							accountType = "Checking      ";
+						} else if(account instanceof Savings) {
+							accountType = "Savings       ";
+						}
 					//identify how many accounts are available, then loop through each one
 					System.out.println("Account " + account.getAccountNumber() +" has $" + account.checkBalance() + " " + accountType);
-					
-				}//close option 3
+					}//close for loop
 				
 				
 				
@@ -263,17 +285,23 @@ public class Application {
 				String userAccountNumber = input.next();
 				System.out.println("Please enter a starting balance for your account. ");
 				int userStartingBalance = input.nextInt();
+				System.out.println("What type of account will this be?");
+				System.out.println("1. Checking \n2. Savings \n3. Money Market \n4. Retirement");
+				String userAccountType = input.next();
+				
 				
 				input.nextLine(); //clearing the input line
 				
 				//Make said account
-				Account newUserAccount = new Account(userAccountNumber, userStartingBalance);
+				if (userAccountType == "Checking") {
+				Account newUserAccount = new Checking(userAccountNumber, userStartingBalance);
 				
 				//add account to atm
 				atmtable.addAccount(newUserAccount);
+				}
 				System.out.println("Current user Account number: " + atmtable.getAccountsLength());
 				
-				
+				transJournal.addTransaction(new Debts("ATM Withdrawl", userAccountNumber, userStartingBalance));
 			
 				atmOption = mainUserMenu(input);
 			}//option 4 to add an account
@@ -318,7 +346,8 @@ public class Application {
 				Atm acctTransfer = new Atm();
 				
 				acctTransfer.transfer(transferFrom, transferTo, transferAmount);
-				
+				transJournal.addTransaction(new Debts("Intra-bank withdraw", userAccountFrom, transferAmount));
+				transJournal.addTransaction(new Debts("Intra-bank deposit", userAccountTo, transferAmount));
 				System.out.println("------------------------------------------------------------------------------");
 				System.out.println("---------------------------Transfer Complete!---------------------------------");
 				System.out.println("------------------------------------------------------------------------------");
@@ -348,9 +377,29 @@ public class Application {
 			}//close option 5
 			else if(atmOption == 6)
 			{
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("---------------------------Recent Transactions--------------------------------");
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("Account  $            Source                                             ");
+				for (Debts transactions : transJournal.getTransactions().values()) {
+					System.out.println("  " + transactions.getAccountNumber() + "       $" + transactions.getDebit() + "    " + transactions.getDebtorName());
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				atmOption = mainUserMenu(input);	
+			}
+			else if(atmOption == 7)
+				{
 				
 				exitMessage();
-			}
+				
+				}
 		//close else if for option 4 quit
 			else if (atmOption <= 0 || atmOption > 6) {
 				System.out.println("Invalid Option, please select from an option below.");
@@ -409,7 +458,8 @@ public class Application {
 		System.out.println("**                                     3. Check Balance                                                **");
 		System.out.println("**                                     4. Add Account                                                  **");
 		System.out.println("**                                     5. Transfer Between Accounts                                    **");
-		System.out.println("**                                     6. Quit                                                         **");
+		System.out.println("**                                     6. Review Transactions                                          **");
+		System.out.println("**                                     7. Quit                                                         **");
 		System.out.println("*********************************************************************************************************");
 		int atmOption = input.nextInt();
 		return atmOption;
@@ -434,4 +484,6 @@ public class Application {
 		
 		System.out.println("Welcome to The Fry National Bank!");
 	}
+	
+	
 }// close class
