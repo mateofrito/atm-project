@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class Atm {
 
 	private HashMap<String, Account> accountslist = new HashMap<String, Account>();
-
+	
 
 	public void addAccount(Account accToAdd) {
 		//Account acctToAdd = new Account("Checking", 200);

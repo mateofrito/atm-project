@@ -2,6 +2,7 @@
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -165,22 +166,24 @@ public class AccountTest {
 	}
 	
 	@Test
-	public void shouldBeAbletoAddBillPay() {
+	public void shouldBeAbletoAddAccountwithRandomAccountNumber() {
 		//arrange
-		BillPay underTest = new BillPay();
-		String accToAdd = "AEP";
+		Scanner input = new Scanner(System.in);
+		
+		Atm atmtableTest = new Atm();
+		
+		atmtableTest.addAccount(new Account("1", 1000));
+		atmtableTest.addAccount(new Account("2", 2000));
 		
 		
 		//act
-		int intialAccounts = underTest.getAccountsLength();
-		underTest.addBillPayee(accToAdd);
-		int accountsAfterAddition = underTest.getAccountsLength();
+		System.out.println("Starting balance");
+		int startingBalance = input.nextInt();
 		
-		System.out.println(underTest.getAccount(0));
 		
 		
 		//assert
-		assertEquals(intialAccounts + 1, accountsAfterAddition);
+		
 		
 	}
 }

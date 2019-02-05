@@ -7,10 +7,11 @@ public class Retirement extends Account {
 	}
 
 	public Retirement(int balance) {
-		super(balance);
+		super(balance); 
 		// TODO Auto-generated constructor stub
 	}
 	public int withdraw(int withdraw) {
+		super.withdraw(withdraw);
 		int withdrawalamt = 0;
 		System.out.println("Unable to perform withdrawal on Retirement Accounts.\nHowever, you can adjust your contributions.");
 		return withdrawalamt;

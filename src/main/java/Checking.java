@@ -10,5 +10,7 @@ public class Checking extends Account {
 		super(balance);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 }

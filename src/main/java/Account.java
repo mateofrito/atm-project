@@ -5,8 +5,11 @@ public class Account {
 	private int deposit;
 	private int withdraw;
 	private int pinNumber;
+	private int debit;
 	//private string exitMsg;
 	private String accountNumber;
+	private String debtor;
+	
 	
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
@@ -23,6 +26,8 @@ public class Account {
 		
 		
 	}
+	
+	
 	public Account(int balance) {
 		this.balance = balance;
 //	
@@ -68,6 +73,14 @@ public class Account {
 	public String getAccountNumber() {
 		
 		return accountNumber;
+	}
+	public String getDebtorName() {
+		
+		return debtor;
+	}
+	public int getDebit() {
+		// TODO Auto-generated method stub
+		return debit;
 	} 
 		
 //		private String exitMessage(String exitMsg) {

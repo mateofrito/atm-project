@@ -93,7 +93,60 @@ public class AtmTest {
 		
 	}
 		
-		
+		@Test
+		public void shouldbeabletocreateTransactionsjournal() {
+			//arrange
+			Scanner input = new Scanner(System.in);
+			
+			Atm atmtableTest = new Atm();
+			Transactions transTest = new Transactions();
+			
+			
+			
+			
+			atmtableTest.addAccount(new Account("1", 1000));
+			atmtableTest.addAccount(new Account("2", 2000));
+			
+			transTest.addTransaction(new Debts("Target", "2",350));
+			transTest.addTransaction(new Debts("Kroger", "1",400));
+			
+			
+			
+			
+			//act
+			for (Account account : atmtableTest.getAccounts().values()) {
+				System.out.println(account.getAccountNumber() + "       "  + "$" + account.checkBalance());
+				
+			}
+			System.out.println("Which account would you like to withdraw from?");
+			String userAccountChoice = input.next();
+			Account withDrawalAccountChoice = atmtableTest.getAccount(userAccountChoice);
+			System.out.println("\nHow much would you like to take out?");
+			System.out.println("Please enter the amount in multiples of 10's.");
+			System.out.println("How much would you like to withdraw (enter 50 for test)?");
+			int withdraw = input.nextInt();
+			int originalBalance = withDrawalAccountChoice.checkBalance(); // runs checkbalance method
+			withDrawalAccountChoice.withdraw(withdraw);
+			int newBalance = withDrawalAccountChoice.checkBalance();
+			System.out.println("Processing transaction for $" + withdraw + ".");
+			System.out.println("New Balance is $" + newBalance + ".");
+			
+			transTest.addTransaction(new Debts("ATM Withdrawl", userAccountChoice, withdraw));
+			
+			for (Debts transactions : transTest.getTransactions().values()) {
+				System.out.println(transactions.getDebtorName() + " $" + transactions.getDebit());
+			}
+			
+			
+			//assert
+			
+			
+			
+			
+			
+			
+			
+		}
 			
 			
 			
@@ -102,5 +155,5 @@ public class AtmTest {
 	
 	
 	
-}
+
 
