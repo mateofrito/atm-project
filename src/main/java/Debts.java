@@ -26,7 +26,7 @@ public class Debts {
 		return amount;
 	} 
 	
-public String getAccountNumber() {
+    public String getAccountNumber() {
 		
 		return accountNumber;
 	}

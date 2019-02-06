@@ -17,23 +17,48 @@ public class Application {
 		
 		
 		Scanner input = new Scanner(System.in);
+	
+		int userPIN = createPinNumber(input);
 		
+		enterPIN(input, userPIN);
+
+		fryNationalBankLogo();
 		
-		
+		int atmOption = mainUserMenu(input);
 
 		
-		//Program assumes it's a new user so it has them set up a PIN number, rather than hardcoding one
+		while (atmOption >= 8) {
+			System.out.println("Invalid Option, please select from an option below.");
+			Toolkit.getDefaultToolkit().beep();
 
-		System.out.println("Card Inserted.  Welcome New User");
-		System.out.println("Please Select a 4 digit Personal Indentification Number.");
-		
-		Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.exclamation");
-		
-		
-		
-		
-		
+			atmOption = mainUserMenu(input);
 
+			} // end first ATM option
+
+		atmOption = optionSwitch(input, atmOption);
+
+		System.out.println(atmOption);
+
+	}// close method
+
+	private static void enterPIN(Scanner input, int userPIN) {
+		int pinNumber;
+		System.out.println("          Please Enter 4 digit Personal Indentification Number.");
+		pinNumber = input.nextInt();
+
+		while (pinNumber != userPIN) {
+			System.out.println("Incorrect PIN. Please Enter 4 digit Personal Indentification Number.");
+			pinNumber = input.nextInt();
+
+		}
+	}
+
+	private static int createPinNumber(Scanner input) {
+		System.out.println("------------------------------------------------------------------------------");
+		System.out.println("--                 Card Inserted.  Welcome New User                         --");
+		System.out.println("--     Please Select a 4 digit Personal Indentification Number              --");
+		System.out.println("------------------------------------------------------------------------------");
+		
 		int pinNumber = input.nextInt();
 
 		System.out.println("Please reenter PIN to verify.");
@@ -50,44 +75,21 @@ public class Application {
 
 			pinVerify = input.nextInt();
 
-		}
+			}
 
 		Account pinATM = new Account(pinNumber);
 
 		// pass PIN to method for verification
 		int userPIN = pinATM.checkPIN(pinNumber);
 
-		// Display PIN to make sure I did the code right.
-		System.out.println("Your PIN is " + userPIN);
-		System.out.println("Please Enter 4 digit Personal Indentification Number.");
-		pinNumber = input.nextInt();
+		
+		System.out.println("------------------------------------------------------------------------------");
+		System.out.println("--                      Your PIN is  has been created!                      --");
+		System.out.println("------------------------------------------------------------------------------");
+		return userPIN;
+	}//end PIN method
 
-		while (pinNumber != userPIN) {
-			System.out.println("Incorrect PIN. Please Enter 4 digit Personal Indentification Number.");
-			pinNumber = input.nextInt();
-
-		}
-
-		// refactored method menu options to a method
-		fryNationalBankLogo();
-		int atmOption = mainUserMenu(input);
-
-		// while statement to prompt user to enter a valid response
-		while (atmOption >= 8) {
-			System.out.println("Invalid Option, please select from an option below.");
-			Toolkit.getDefaultToolkit().beep();
-
-			atmOption = mainUserMenu(input);
-
-		} // end while move to end of code
-
-		atmOption = optionSwitch(input, atmOption);// close switch
-
-		System.out.println(atmOption);
-
-	}// close method
-
-	// method for switch
+	
 	private static int optionSwitch(Scanner input, int atmOption) {
 		Atm atmtable = new Atm();
 		Transactions transJournal = new Transactions();
@@ -416,31 +418,7 @@ public class Application {
 		
 	}
 
-	private static int addNewAccountMenu(Scanner input) {
-		Atm atm= new Atm();
-		
-		//get info to make account
-		System.out.println("Please enter a unique Account Number");
-		String userAccountNumber = input.next();
-		System.out.println("Please enter a starting balance for your account. ");
-		int userStartingBalance = input.nextInt();
-		
-		input.nextLine(); //clearing the input line
-		
-		//Make said account
-		Account newUserAccount = new Account(userAccountNumber, userStartingBalance);
-		
-		//add account to atm
-		atm.addAccount(newUserAccount);
-		System.out.println("Current user Account number: " + atm.getAccountsLength());
-		
-		
-		System.out.println("1. Add More Accounts");
-		System.out.println("2. Return to Main Menu");
-		int acctMenuOption = input.nextInt();
-		return acctMenuOption;
-		
-	}//end optionSwitch method
+	
 
 	private static void exitMessage() {
 		System.out.println("Thank you for choosing the Fry National Bank!");
